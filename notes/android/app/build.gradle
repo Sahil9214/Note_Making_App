@@ -89,6 +89,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file('utkarsh.keystore') // Updated keystore file name
+            storePassword 'Sahil@9214' // Keystore password
+            keyAlias 'your_key_alias' // Replace 'your_key_alias' with the actual alias used in your keystore
+            keyPassword 'Sahil@9214' // Key password (same as keystore password in this case)
+            }
+        }
     }
     buildTypes {
         debug {
@@ -97,9 +105,11 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
+             release {
+            signingConfig signingConfigs.release
+            minifyEnabled true // enable Proguard for release builds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
         }
     }
 }
@@ -108,6 +118,7 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
+    implementation project(':react-native-vector-icons')
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
@@ -117,3 +128,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
